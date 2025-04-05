@@ -8,6 +8,7 @@ import org.abay.entities.Product;
 import org.abay.persistence.CustomPersistenceUnitInfoProvider;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,8 +33,26 @@ public class Main {
 
 
             //JPQL query to fetch all the products and display them to console
-            TypedQuery<Product> jpql = em.createQuery("SELECT p FROM Product p where p.inStock =false",Product.class);
-            jpql.getResultList().forEach(System.out::println);
+           // TypedQuery<Product> jpql = em.createQuery("SELECT p FROM Product p where p.inStock =false",Product.class);
+           //selecting list of products in two different categories
+
+          //  TypedQuery<Product> jpql = em.createQuery("SELECT p from Product p where p.category IN ('Kitchen','Electronics')",Product.class);
+
+            //here am selecting product brands start with S
+          //  TypedQuery<Product> jpql = em.createQuery("select p from Product  p where p.brand like 'S%'",Product.class);
+
+            //THE NEXT QUERY IS SELECTING PRODUCTS BASED ON Quantity RANGE ON A CERTAIN SPECIFIC RANGE
+//            TypedQuery<Product> jpql = em.createQuery("select p from Product p where p.quantity BETWEEN 5 and 15", Product.class);
+//            jpql.getResultList().forEach(System.out::println);
+
+
+            //AM PERFORMING AGREGATE FUNCTIONS AND ABLE TO FIND TOTAL PRODUCTS BASED ON THE FF QUERY
+            TypedQuery<Long>  totalProductsQuery = em.createQuery("select count(p) from  Product p", Long.class);
+            System.out.println(totalProductsQuery.getSingleResult());
+
+            //Finding the largest avialable product qunaity
+            TypedQuery<Integer> largestQuantity = em.createQuery("select max (p.quantity) from Product p ",Integer.class);
+            System.out.println(largestQuantity.getSingleResult());
 
 
 
